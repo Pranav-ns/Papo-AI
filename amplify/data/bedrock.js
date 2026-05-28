@@ -30,7 +30,7 @@ ${ingredients.join(", ")}.`;
             content: [
               {
                 type: "text",
-                text: `\n\nHuman: ${prompt}\n\nAssistant:`,
+                text: prompt,
               },
             ],
           },
