@@ -1,19 +1,43 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
+
 :root {
-  font-family:
-    Inter,
-    system-ui,
-    Avenir,
-    Helvetica,
-    Arial,
-    sans-serif;
+  font-family: 'Outfit', system-ui, -apple-system, sans-serif;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  /* Color Design System Tokens */
+  --bg-deep: #070913;
+  --bg-darker: #0c0f1e;
+  --bg-card: rgba(18, 22, 41, 0.45);
+  --bg-card-hover: rgba(26, 32, 58, 0.6);
+  --border-glass: rgba(255, 255, 255, 0.08);
+  --border-glass-active: rgba(255, 107, 53, 0.3);
+  
+  --primary-orange: #ff6b35;
+  --primary-orange-hover: #f97316;
+  --primary-yellow: #ffb703;
+  --accent-green: #22c55e;
+  --accent-green-bg: rgba(34, 197, 94, 0.1);
+  
+  --text-primary: #f9fafb;
+  --text-secondary: #9ca3af;
+  --text-muted: #6b7280;
+  
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.1);
+  --shadow-md: 0 12px 32px rgba(0, 0, 0, 0.2);
+  --shadow-lg: 0 20px 48px rgba(0, 0, 0, 0.35);
+  --shadow-glow: 0 0 30px rgba(255, 107, 53, 0.25);
+  
+  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --transition-fast: all 0.15s ease;
 }
 
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 html {
@@ -21,12 +45,185 @@ html {
 }
 
 body {
-  margin: 0;
-  min-width: 320px;
+  background-color: var(--bg-deep);
+  color: var(--text-primary);
   min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
 }
 
-button,
-input {
-  font: inherit;
+/* Gorgeous Ambient Background Blobs */
+body::before {
+  content: '';
+  position: absolute;
+  top: -10%;
+  left: -10%;
+  width: 50%;
+  height: 50%;
+  background: radial-gradient(circle, rgba(255, 107, 53, 0.15) 0%, transparent 70%);
+  z-index: -1;
+  pointer-events: none;
+  filter: blur(80px);
+}
+
+body::after {
+  content: '';
+  position: absolute;
+  bottom: -10%;
+  right: -10%;
+  width: 60%;
+  height: 60%;
+  background: radial-gradient(circle, rgba(255, 183, 3, 0.08) 0%, transparent 70%);
+  z-index: -1;
+  pointer-events: none;
+  filter: blur(100px);
+}
+
+/* custom scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 99px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 107, 53, 0.5);
+}
+
+/* ==========================================
+   AMPLIFY AUTHENTICATOR GORGEOUS CUSTOMIZATION
+   ========================================== */
+
+/* Center and style the authenticator shell */
+.amplify-authenticator {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 24px;
+}
+
+[data-amplify-authenticator] {
+  --amplify-colors-background-primary: #0e1224 !important;
+  --amplify-colors-background-secondary: #070913 !important;
+  --amplify-colors-brand-primary-80: var(--primary-orange-hover) !important;
+  --amplify-colors-brand-primary-90: var(--primary-orange) !important;
+  --amplify-colors-brand-primary-100: var(--primary-orange) !important;
+  
+  --amplify-colors-text-primary: var(--text-primary) !important;
+  --amplify-colors-text-secondary: var(--text-secondary) !important;
+  --amplify-colors-text-tertiary: var(--text-muted) !important;
+  
+  --amplify-colors-border-primary: var(--border-glass) !important;
+  --amplify-colors-border-secondary: var(--border-glass) !important;
+  
+  /* Field controls */
+  --amplify-components-fieldcontrol-background-color: rgba(255, 255, 255, 0.03) !important;
+  --amplify-components-fieldcontrol-border-color: var(--border-glass) !important;
+  --amplify-components-fieldcontrol-color: var(--text-primary) !important;
+  --amplify-components-fieldcontrol-focus-border-color: var(--primary-orange) !important;
+  --amplify-components-fieldcontrol-focus-box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.25) !important;
+
+  /* Buttons */
+  --amplify-components-button-primary-background-color: var(--primary-orange) !important;
+  --amplify-components-button-primary-hover-background-color: var(--primary-orange-hover) !important;
+  
+  font-family: 'Outfit', sans-serif !important;
+}
+
+/* Style the auth card wrapper */
+[data-amplify-container] {
+  background: rgba(12, 15, 30, 0.75) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid var(--border-glass) !important;
+  border-radius: 24px !important;
+  box-shadow: var(--shadow-lg), 0 0 40px rgba(255, 107, 53, 0.08) !important;
+  overflow: hidden !important;
+  max-width: 460px !important;
+  width: 100% !important;
+}
+
+/* Heading style inside Authenticator */
+.amplify-heading {
+  color: var(--text-primary) !important;
+  font-weight: 700 !important;
+  letter-spacing: -0.02em !important;
+}
+
+/* Tabs style */
+.amplify-tabs {
+  border-bottom: 1px solid var(--border-glass) !important;
+}
+
+.amplify-tabs-item {
+  color: var(--text-secondary) !important;
+  font-weight: 600 !important;
+  transition: var(--transition-fast) !important;
+  border-bottom: 2px solid transparent !important;
+}
+
+.amplify-tabs-item--active {
+  color: var(--primary-orange) !important;
+  border-bottom-color: var(--primary-orange) !important;
+  background: transparent !important;
+}
+
+.amplify-tabs-item:hover:not(.amplify-tabs-item--active) {
+  color: var(--text-primary) !important;
+  border-bottom-color: rgba(255, 107, 53, 0.2) !important;
+}
+
+/* Input fields */
+.amplify-input {
+  border-radius: 12px !important;
+  padding: 12px 16px !important;
+  font-size: 15px !important;
+  transition: var(--transition-fast) !important;
+}
+
+/* Primary Button customization */
+.amplify-button--primary {
+  border-radius: 12px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.02em !important;
+  padding: 14px !important;
+  box-shadow: 0 8px 20px rgba(255, 107, 53, 0.2) !important;
+  transition: var(--transition-smooth) !important;
+}
+
+.amplify-button--primary:hover {
+  transform: translateY(-1px) !important;
+  box-shadow: 0 12px 28px rgba(255, 107, 53, 0.3) !important;
+}
+
+.amplify-button--primary:active {
+  transform: translateY(1px) !important;
+}
+
+/* Link customization */
+.amplify-button--link {
+  color: var(--primary-orange) !important;
+  font-weight: 600 !important;
+  transition: var(--transition-fast) !important;
+}
+
+.amplify-button--link:hover {
+  color: var(--primary-yellow) !important;
+  text-decoration: none !important;
+}
+
+/* Form Helper & Labels */
+.amplify-label {
+  color: var(--text-secondary) !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+  margin-bottom: 6px !important;
 }
