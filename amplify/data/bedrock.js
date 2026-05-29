@@ -6,24 +6,25 @@ export function request(ctx) {
   const prompt =
     "You are a professional chef. A user has these ingredients: " +
     ingredients.join(", ") +
-    ". Suggest a detailed recipe with a name, ingredients list with quantities, and step-by-step cooking instructions.";
+    ". Suggest a detailed recipe with a name, ingredients list with quantities, and step-by-step cooking instructions. Format the response clearly with sections for Recipe Name, Ingredients, and Instructions.";
 
   return {
-    resourcePath: "/model/anthropic.claude-3-sonnet-20240229-v1:0/invoke",
+    resourcePath: "/model/amazon.nova-lite-v1:0/invoke",
     method: "POST",
     params: {
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        anthropic_version: "bedrock-2023-05-31",
-        max_tokens: 1000,
         messages: [
           {
             role: "user",
-            content: [{ type: "text", text: prompt }],
+            content: [{ text: prompt }],
           },
         ],
+        inferenceConfig: {
+          max_new_tokens: 1000,
+        },
       }),
     },
   };
@@ -34,7 +35,7 @@ export function response(ctx) {
 
   if (statusCode === 200) {
     const parsed = JSON.parse(body);
-    return { body: parsed.content[0].text };
+    return { body: parsed.output.message.content[0].text };
   }
 
   const parsed = JSON.parse(body);
