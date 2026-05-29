@@ -1,36 +1,31 @@
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 :root {
-  font-family: 'Outfit', system-ui, -apple-system, sans-serif;
+  font-family: 'Inter', system-ui, -apple-system, sans-serif;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  /* Color Design System Tokens */
-  --bg-deep: #070913;
-  --bg-darker: #0c0f1e;
-  --bg-card: rgba(18, 22, 41, 0.45);
-  --bg-card-hover: rgba(26, 32, 58, 0.6);
-  --border-glass: rgba(255, 255, 255, 0.08);
-  --border-glass-active: rgba(255, 107, 53, 0.3);
+  /* Minimal Dark Dashboard Tokens */
+  --bg-main: #111111;
+  --bg-sidebar: #1a1a1a;
+  --bg-card: #212121;
+  --bg-card-hover: #2a2a2a;
   
-  --primary-orange: #ff6b35;
-  --primary-orange-hover: #f97316;
-  --primary-yellow: #ffb703;
-  --accent-green: #22c55e;
-  --accent-green-bg: rgba(34, 197, 94, 0.1);
+  --border-light: #333333;
+  --border-active: #444444;
   
-  --text-primary: #f9fafb;
-  --text-secondary: #9ca3af;
-  --text-muted: #6b7280;
+  --text-primary: #f4f4f5;
+  --text-secondary: #a1a1aa;
+  --text-muted: #71717a;
   
-  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.1);
-  --shadow-md: 0 12px 32px rgba(0, 0, 0, 0.2);
-  --shadow-lg: 0 20px 48px rgba(0, 0, 0, 0.35);
-  --shadow-glow: 0 0 30px rgba(255, 107, 53, 0.25);
+  --accent-color: #3b82f6; /* Subtle blue for active states */
+  --accent-hover: #2563eb;
   
-  --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+  
   --transition-fast: all 0.15s ease;
 }
 
@@ -40,68 +35,39 @@
   padding: 0;
 }
 
-html {
-  scroll-behavior: smooth;
+html, body, #root {
+  height: 100%;
+  width: 100%;
 }
 
 body {
-  background-color: var(--bg-deep);
+  background-color: var(--bg-main);
   color: var(--text-primary);
-  min-height: 100vh;
   overflow-x: hidden;
-  position: relative;
-}
-
-/* Gorgeous Ambient Background Blobs */
-body::before {
-  content: '';
-  position: absolute;
-  top: -10%;
-  left: -10%;
-  width: 50%;
-  height: 50%;
-  background: radial-gradient(circle, rgba(255, 107, 53, 0.15) 0%, transparent 70%);
-  z-index: -1;
-  pointer-events: none;
-  filter: blur(80px);
-}
-
-body::after {
-  content: '';
-  position: absolute;
-  bottom: -10%;
-  right: -10%;
-  width: 60%;
-  height: 60%;
-  background: radial-gradient(circle, rgba(255, 183, 3, 0.08) 0%, transparent 70%);
-  z-index: -1;
-  pointer-events: none;
-  filter: blur(100px);
 }
 
 /* custom scrollbars */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 6px;
 }
 
 ::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.1);
+  background: var(--bg-main);
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
-  border-radius: 99px;
+  background: var(--border-light);
+  border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 107, 53, 0.5);
+  background: var(--border-active);
 }
 
 /* ==========================================
    AMPLIFY AUTHENTICATOR GORGEOUS CUSTOMIZATION
    ========================================== */
 
-/* Center and style the authenticator shell */
 .amplify-authenticator {
   display: flex;
   justify-content: center;
@@ -111,119 +77,90 @@ body::after {
 }
 
 [data-amplify-authenticator] {
-  --amplify-colors-background-primary: #0e1224 !important;
-  --amplify-colors-background-secondary: #070913 !important;
-  --amplify-colors-brand-primary-80: var(--primary-orange-hover) !important;
-  --amplify-colors-brand-primary-90: var(--primary-orange) !important;
-  --amplify-colors-brand-primary-100: var(--primary-orange) !important;
+  --amplify-colors-background-primary: var(--bg-sidebar) !important;
+  --amplify-colors-background-secondary: var(--bg-main) !important;
+  --amplify-colors-brand-primary-80: var(--accent-hover) !important;
+  --amplify-colors-brand-primary-90: var(--accent-color) !important;
+  --amplify-colors-brand-primary-100: var(--accent-color) !important;
   
   --amplify-colors-text-primary: var(--text-primary) !important;
   --amplify-colors-text-secondary: var(--text-secondary) !important;
   --amplify-colors-text-tertiary: var(--text-muted) !important;
   
-  --amplify-colors-border-primary: var(--border-glass) !important;
-  --amplify-colors-border-secondary: var(--border-glass) !important;
+  --amplify-colors-border-primary: var(--border-light) !important;
+  --amplify-colors-border-secondary: var(--border-light) !important;
   
   /* Field controls */
-  --amplify-components-fieldcontrol-background-color: rgba(255, 255, 255, 0.03) !important;
-  --amplify-components-fieldcontrol-border-color: var(--border-glass) !important;
+  --amplify-components-fieldcontrol-background-color: var(--bg-main) !important;
+  --amplify-components-fieldcontrol-border-color: var(--border-light) !important;
   --amplify-components-fieldcontrol-color: var(--text-primary) !important;
-  --amplify-components-fieldcontrol-focus-border-color: var(--primary-orange) !important;
-  --amplify-components-fieldcontrol-focus-box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.25) !important;
+  --amplify-components-fieldcontrol-focus-border-color: var(--accent-color) !important;
+  --amplify-components-fieldcontrol-focus-box-shadow: none !important;
 
   /* Buttons */
-  --amplify-components-button-primary-background-color: var(--primary-orange) !important;
-  --amplify-components-button-primary-hover-background-color: var(--primary-orange-hover) !important;
+  --amplify-components-button-primary-background-color: var(--accent-color) !important;
+  --amplify-components-button-primary-hover-background-color: var(--accent-hover) !important;
   
-  font-family: 'Outfit', sans-serif !important;
+  font-family: 'Inter', sans-serif !important;
 }
 
 /* Style the auth card wrapper */
 [data-amplify-container] {
-  background: rgba(12, 15, 30, 0.75) !important;
-  backdrop-filter: blur(20px) !important;
-  -webkit-backdrop-filter: blur(20px) !important;
-  border: 1px solid var(--border-glass) !important;
-  border-radius: 24px !important;
-  box-shadow: var(--shadow-lg), 0 0 40px rgba(255, 107, 53, 0.08) !important;
+  background: var(--bg-sidebar) !important;
+  border: 1px solid var(--border-light) !important;
+  border-radius: 12px !important;
+  box-shadow: var(--shadow-md) !important;
   overflow: hidden !important;
-  max-width: 460px !important;
+  max-width: 400px !important;
   width: 100% !important;
 }
 
-/* Heading style inside Authenticator */
 .amplify-heading {
   color: var(--text-primary) !important;
-  font-weight: 700 !important;
-  letter-spacing: -0.02em !important;
+  font-weight: 600 !important;
 }
 
-/* Tabs style */
 .amplify-tabs {
-  border-bottom: 1px solid var(--border-glass) !important;
+  border-bottom: 1px solid var(--border-light) !important;
 }
 
 .amplify-tabs-item {
   color: var(--text-secondary) !important;
-  font-weight: 600 !important;
-  transition: var(--transition-fast) !important;
+  font-weight: 500 !important;
   border-bottom: 2px solid transparent !important;
 }
 
 .amplify-tabs-item--active {
-  color: var(--primary-orange) !important;
-  border-bottom-color: var(--primary-orange) !important;
+  color: var(--text-primary) !important;
+  border-bottom-color: var(--accent-color) !important;
   background: transparent !important;
 }
 
-.amplify-tabs-item:hover:not(.amplify-tabs-item--active) {
-  color: var(--text-primary) !important;
-  border-bottom-color: rgba(255, 107, 53, 0.2) !important;
-}
-
-/* Input fields */
 .amplify-input {
-  border-radius: 12px !important;
-  padding: 12px 16px !important;
-  font-size: 15px !important;
-  transition: var(--transition-fast) !important;
+  border-radius: 6px !important;
+  padding: 10px 14px !important;
+  font-size: 14px !important;
 }
 
-/* Primary Button customization */
 .amplify-button--primary {
-  border-radius: 12px !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.02em !important;
-  padding: 14px !important;
-  box-shadow: 0 8px 20px rgba(255, 107, 53, 0.2) !important;
-  transition: var(--transition-smooth) !important;
+  border-radius: 6px !important;
+  font-weight: 500 !important;
+  padding: 12px !important;
+  box-shadow: none !important;
 }
 
-.amplify-button--primary:hover {
-  transform: translateY(-1px) !important;
-  box-shadow: 0 12px 28px rgba(255, 107, 53, 0.3) !important;
-}
-
-.amplify-button--primary:active {
-  transform: translateY(1px) !important;
-}
-
-/* Link customization */
 .amplify-button--link {
-  color: var(--primary-orange) !important;
-  font-weight: 600 !important;
-  transition: var(--transition-fast) !important;
+  color: var(--text-secondary) !important;
+  font-weight: 500 !important;
 }
 
 .amplify-button--link:hover {
-  color: var(--primary-yellow) !important;
-  text-decoration: none !important;
+  color: var(--text-primary) !important;
 }
 
-/* Form Helper & Labels */
 .amplify-label {
   color: var(--text-secondary) !important;
-  font-size: 14px !important;
+  font-size: 13px !important;
   font-weight: 500 !important;
-  margin-bottom: 6px !important;
+  margin-bottom: 4px !important;
 }

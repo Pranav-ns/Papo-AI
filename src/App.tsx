@@ -22,15 +22,13 @@ interface ChatMessage {
   isRecipe?: boolean;
 }
 
-// Preset chips to help users try recipes instantly
 const PRESET_CHIPS = [
-  { label: "🍳 Quick Egg Breakfast", value: "eggs, bread, avocado, butter" },
-  { label: "🍝 Creamy Pasta", value: "pasta, garlic, chicken breast, cream, parmesan" },
-  { label: "🥗 Healthy Salad", value: "cucumber, cherry tomatoes, olive oil, lemon, feta cheese" },
-  { label: "🥞 Fluffy Pancakes", value: "flour, milk, egg, maple syrup, butter" }
+  { label: "🍳 Quick Breakfast", value: "eggs, bread, butter" },
+  { label: "🍝 Dinner Pasta", value: "pasta, tomato sauce, cheese" },
+  { label: "🥗 Healthy Salad", value: "lettuce, cucumber, olive oil" },
+  { label: "🥘 One-Pot Meal", value: "rice, chicken, beans" }
 ];
 
-// Helper to render bold **text** inside paragraphs and lists
 const parseBoldText = (text: string) => {
   const parts = text.split(/\*\*([^*]+)\*\*/g);
   return parts.map((part, idx) => {
@@ -41,7 +39,6 @@ const parseBoldText = (text: string) => {
   });
 };
 
-// Custom lightweight Recipe Markdown-to-HTML parser component
 const RecipeRenderer: React.FC<{ text: string }> = ({ text }) => {
   const lines = text.split("\n");
   
@@ -49,9 +46,8 @@ const RecipeRenderer: React.FC<{ text: string }> = ({ text }) => {
     <div className="recipe-content">
       {lines.map((line, idx) => {
         const trimmed = line.trim();
-        if (!trimmed) return <div key={idx} className="recipe-spacer" />;
+        if (!trimmed) return <br key={idx} />;
         
-        // Title headers
         if (trimmed.startsWith("###")) {
           return <h3 key={idx} className="recipe-h3">{trimmed.replace(/^###\s*/, "")}</h3>;
         }
@@ -62,7 +58,6 @@ const RecipeRenderer: React.FC<{ text: string }> = ({ text }) => {
           return <h1 key={idx} className="recipe-h1">{trimmed.replace(/^#\s*/, "")}</h1>;
         }
         
-        // Bulleted lists
         if (trimmed.startsWith("-") || trimmed.startsWith("*")) {
           const listText = trimmed.replace(/^[-*]\s*/, "");
           return (
@@ -72,7 +67,6 @@ const RecipeRenderer: React.FC<{ text: string }> = ({ text }) => {
           );
         }
         
-        // Numbered lists
         if (/^\d+\.\s/.test(trimmed)) {
           const listText = trimmed.replace(/^\d+\.\s*/, "");
           return (
@@ -82,7 +76,6 @@ const RecipeRenderer: React.FC<{ text: string }> = ({ text }) => {
           );
         }
         
-        // Default paragraph
         return <p key={idx} className="recipe-p">{parseBoldText(trimmed)}</p>;
       })}
     </div>
@@ -98,31 +91,17 @@ function App() {
     {
       id: "welcome",
       role: "assistant",
-      content: `Hey! I am **Papo AI**, your personal chef. Tell me what ingredients you have in your kitchen, and I will instantly formulate a delicious recipe for you!`,
+      content: "Hello Chef. What ingredients are we working with today?",
     }
   ]);
-  const [showProfileMenu, setShowProfileMenu] = useState(false);
   
   const chatWindowRef = useRef<HTMLDivElement>(null);
-  const profileMenuRef = useRef<HTMLDivElement>(null);
 
-  // Auto scroll chat to bottom when messages change or loading state toggles
   useEffect(() => {
     if (chatWindowRef.current) {
       chatWindowRef.current.scrollTop = chatWindowRef.current.scrollHeight;
     }
   }, [messages, loading]);
-
-  // Close profile dropdown when clicking outside
-  useEffect(() => {
-    function handleClickOutside(event: MouseEvent) {
-      if (profileMenuRef.current && !profileMenuRef.current.contains(event.target as Node)) {
-        setShowProfileMenu(false);
-      }
-    }
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, []);
 
   const handlePresetClick = (value: string) => {
     setIngredients(value);
@@ -134,7 +113,6 @@ function App() {
     const targetIngredients = ingredients.trim();
     if (!targetIngredients) return;
 
-    // 1. Add User Message to History
     const userMessageId = Date.now().toString();
     const newUserMessage: ChatMessage = {
       id: userMessageId,
@@ -143,30 +121,24 @@ function App() {
     };
 
     setMessages((prev) => [...prev, newUserMessage]);
-    setIngredients(""); // Clear input right away
+    setIngredients("");
     setLoading(true);
 
     try {
-      console.log("Generating recipe for:", targetIngredients);
-
-      // 2. Fetch Recipe from Bedrock
       const response = await amplifyClient.queries.askBedrock({
         ingredients: [targetIngredients],
       });
-
-      console.log("Amplify Response:", response);
 
       const data = response?.data;
       const errors = response?.errors;
 
       if (Array.isArray(errors) && errors.length > 0) {
-        console.error("Amplify errors:", errors);
         setMessages((prev) => [
           ...prev,
           {
             id: Date.now().toString(),
             role: "assistant",
-            content: `⚠️ **Error:** ${errors[0]?.message || "Failed to contact bedrock AI"}`
+            content: `Error: ${errors[0]?.message || "Failed to contact AI"}`
           }
         ]);
         return;
@@ -178,13 +150,12 @@ function App() {
           {
             id: Date.now().toString(),
             role: "assistant",
-            content: `⚠️ **Oops!** The AI generated an empty response. Please try again with different ingredients.`
+            content: `Empty response received.`
           }
         ]);
         return;
       }
 
-      // 3. Add AI Recipe Response
       setMessages((prev) => [
         ...prev,
         {
@@ -196,13 +167,12 @@ function App() {
       ]);
 
     } catch (error) {
-      console.error("Caught error:", error);
       setMessages((prev) => [
         ...prev,
         {
           id: Date.now().toString(),
           role: "assistant",
-          content: `⚠️ **Something went wrong:** ${String(error)}. Please check your AWS setup or network connection.`
+          content: `System error: ${String(error)}.`
         }
       ]);
     } finally {
@@ -211,134 +181,121 @@ function App() {
   };
 
   const userDisplayName = user?.signInDetails?.loginId || user?.username || "Chef";
+  const userInitial = userDisplayName.charAt(0).toUpperCase();
 
   return (
-    <main className="app-page">
-      <section className="chat-shell animate-fade-in">
-        {/* Sleek Glass Header */}
-        <header className="chat-header">
-          <div className="brand">
-            <div className="brand-icon">🍳</div>
-            <div>
-              <h1>Papo</h1>
-              <p>Your AI recipe buddy</p>
+    <div className="app-page">
+      {/* Sidebar Navigation */}
+      <aside className="sidebar">
+        <div className="sidebar-header">
+          <span className="brand-icon">🍳</span>
+          <h1>Papo AI</h1>
+        </div>
+
+        <div className="sidebar-section">
+          <h2 className="section-title">Chefs</h2>
+          <div className="nav-item active">
+            <span className="nav-item-icon">👨‍🍳</span>
+            <span>Head Chef</span>
+          </div>
+          <div className="nav-item">
+            <span className="nav-item-icon">🥗</span>
+            <span>Nutritionist Agent</span>
+          </div>
+        </div>
+
+        <div className="sidebar-section">
+          <h2 className="section-title">Recent Recipes</h2>
+          <div className="nav-item">
+            <span className="nav-item-icon">📄</span>
+            <span>Mediterranean Pasta</span>
+          </div>
+          <div className="nav-item">
+            <span className="nav-item-icon">📄</span>
+            <span>Spicy Tofu Bowl</span>
+          </div>
+        </div>
+
+        <div className="sidebar-bottom">
+          <div className="user-profile">
+            <div className="avatar-small">{userInitial}</div>
+            <div className="user-details">
+              <span className="user-name">{userDisplayName}</span>
+              <span className="user-status">
+                <span className="status-dot"></span> Online
+              </span>
             </div>
           </div>
+          <div className="logout-link" onClick={signOut}>Sign out</div>
+        </div>
+      </aside>
 
-          <div className="header-actions">
-            <span className="status-pill">
-              <span className="status-dot"></span>
-              Bedrock AI Active
-            </span>
-            
-            {/* User Profile Droplist */}
-            <div className="profile-container" ref={profileMenuRef}>
-              <button 
-                className={`profile-trigger ${showProfileMenu ? "active" : ""}`}
-                onClick={() => setShowProfileMenu(!showProfileMenu)}
-                title="View Profile"
-              >
-                <div className="profile-avatar">
-                  {userDisplayName.charAt(0).toUpperCase()}
-                </div>
-              </button>
-
-              {showProfileMenu && (
-                <div className="profile-dropdown animate-slide-up">
-                  <div className="dropdown-user-info">
-                    <p className="dropdown-username">{userDisplayName}</p>
-                    <p className="dropdown-role">Member Chef</p>
-                  </div>
-                  <div className="dropdown-divider" />
-                  <button className="logout-btn" onClick={signOut}>
-                    <span className="logout-icon">🚪</span> Sign Out
-                  </button>
-                </div>
-              )}
-            </div>
-          </div>
+      {/* Main Chat Interface */}
+      <section className="main-content">
+        <header className="top-bar">
+          <h2 className="top-bar-title">Head Chef v1.0</h2>
         </header>
 
-        {/* Scrollable Chat Window */}
-        <section className="chat-window" ref={chatWindowRef}>
+        <div className="chat-window" ref={chatWindowRef}>
           {messages.map((msg) => (
-            <div 
-              key={msg.id} 
-              className={`message ${msg.role === "user" ? "user-message" : "bot-message"}`}
-            >
-              {msg.role === "assistant" && (
-                <div className="avatar bot-avatar">
-                  {msg.isRecipe ? "🍽️" : "🤖"}
-                </div>
-              )}
-
+            <div key={msg.id} className={`message ${msg.role === "user" ? "user-message" : "bot-message"} animate-fade-in`}>
+              <div className="message-label">
+                {msg.role === "user" ? "You" : "Papo AI"}
+              </div>
+              
               <div className={`bubble ${msg.role === "user" ? "user-bubble" : msg.isRecipe ? "recipe-bubble" : "bot-bubble"}`}>
-                <p className="message-label">
-                  {msg.role === "user" ? "You" : msg.isRecipe ? "Papo Custom Recipe" : "Papo AI"}
-                </p>
                 {msg.isRecipe ? (
                   <RecipeRenderer text={msg.content} />
                 ) : (
-                  <p className="message-text">{parseBoldText(msg.content)}</p>
+                  <div className="message-text">{parseBoldText(msg.content)}</div>
                 )}
               </div>
-
-              {msg.role === "user" && (
-                <div className="avatar user-avatar">👨‍🍳</div>
-              )}
             </div>
           ))}
 
           {loading && (
-            <div className="message bot-message">
-              <div className="avatar bot-avatar">🤖</div>
-              <div className="bubble loading-bubble">
-                <p className="message-label">Papo AI</p>
-                <div className="loading-row">
-                  <Loader size="small" />
-                  <span>Cooking up your custom recipe...</span>
+            <div className="message bot-message animate-fade-in">
+              <div className="message-label">Papo AI</div>
+              <div className="bubble bot-bubble">
+                <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+                  <Loader size="small" /> Generating recipe...
                 </div>
               </div>
             </div>
           )}
-        </section>
+        </div>
 
-        {/* Interaction Presets Bar */}
-        {messages.length === 1 && !loading && (
-          <div className="presets-bar animate-fade-in">
-            <p className="presets-title">Tap quick ideas to try:</p>
-            <div className="preset-chips">
-              {PRESET_CHIPS.map((chip, idx) => (
-                <button 
-                  key={idx} 
-                  className="preset-chip"
-                  onClick={() => handlePresetClick(chip.value)}
-                >
-                  {chip.label}
-                </button>
-              ))}
-            </div>
+        {/* Input Area */}
+        <div className="input-container">
+          <div style={{ width: "100%", maxWidth: "800px" }}>
+            
+            {messages.length === 1 && !loading && (
+              <div className="preset-chips animate-fade-in">
+                {PRESET_CHIPS.map((chip, idx) => (
+                  <button key={idx} className="preset-chip" onClick={() => handlePresetClick(chip.value)}>
+                    {chip.label}
+                  </button>
+                ))}
+              </div>
+            )}
+
+            <form onSubmit={onSubmit} className="chat-input-area">
+              <input
+                type="text"
+                value={ingredients}
+                onChange={(e) => setIngredients(e.target.value)}
+                placeholder="Type ingredients..."
+                autoComplete="off"
+                disabled={loading}
+              />
+              <button type="submit" disabled={loading || !ingredients.trim()}>
+                Generate
+              </button>
+            </form>
           </div>
-        )}
-
-        {/* Chat Inputs */}
-        <form onSubmit={onSubmit} className="chat-input-area">
-          <input
-            type="text"
-            id="ingredients"
-            name="ingredients"
-            value={ingredients}
-            onChange={(event) => setIngredients(event.target.value)}
-            placeholder="Type ingredients... (e.g. spinach, salmon, cream)"
-            autoComplete="off"
-            disabled={loading}
-          />
-          <button type="submit" disabled={loading || !ingredients.trim()}>
-            {loading ? "Cooking..." : "Generate"}
-          </button>
-        </form>
+        </div>
       </section>
-    </main>
+    </div>
   );
 }
 
