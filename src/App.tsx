@@ -23,11 +23,17 @@ interface ChatMessage {
 }
 
 const PRESET_CHIPS = [
-  { label: "🍳 Quick Breakfast", value: "eggs, bread, butter" },
-  { label: "🍝 Dinner Pasta", value: "pasta, tomato sauce, cheese" },
-  { label: "🥗 Healthy Salad", value: "lettuce, cucumber, olive oil" },
-  { label: "🥘 One-Pot Meal", value: "rice, chicken, beans" }
+  { label: "Quick Breakfast", value: "eggs, bread, butter" },
+  { label: "Dinner Pasta", value: "pasta, tomato sauce, cheese" },
+  { label: "Healthy Salad", value: "lettuce, cucumber, olive oil" },
+  { label: "One-Pot Meal", value: "rice, chicken, beans" }
 ];
+
+const PremiumBullet = () => (
+  <svg width="8" height="8" viewBox="0 0 8 8" fill="none" xmlns="http://www.w3.org/2000/svg" style={{ margin: "auto" }}>
+    <circle cx="4" cy="4" r="4" fill="currentColor" opacity="0.6"/>
+  </svg>
+);
 
 const parseBoldText = (text: string) => {
   const parts = text.split(/\*\*([^*]+)\*\*/g);
@@ -187,32 +193,23 @@ function App() {
     <div className="app-page">
       {/* Sidebar Navigation */}
       <aside className="sidebar">
-        <div className="sidebar-header">
-          <span className="brand-icon">🍳</span>
+        <div className="sidebar-header" style={{ alignItems: "center", gap: "10px" }}>
+          <img src="/logo.png" alt="Papo Logo" style={{ width: "40px", height: "40px", objectFit: "contain" }} />
           <h1>Papo AI</h1>
         </div>
 
         <div className="sidebar-section">
           <h2 className="section-title">Chefs</h2>
           <div className="nav-item active">
-            <span className="nav-item-icon">👨‍🍳</span>
+            <span className="nav-item-icon"><PremiumBullet /></span>
             <span>Head Chef</span>
           </div>
           <div className="nav-item">
-            <span className="nav-item-icon">🥗</span>
-            <span>Nutritionist Agent</span>
-          </div>
-        </div>
-
-        <div className="sidebar-section">
-          <h2 className="section-title">Recent Recipes</h2>
-          <div className="nav-item">
-            <span className="nav-item-icon">📄</span>
-            <span>Mediterranean Pasta</span>
-          </div>
-          <div className="nav-item">
-            <span className="nav-item-icon">📄</span>
-            <span>Spicy Tofu Bowl</span>
+            <span className="nav-item-icon"><PremiumBullet /></span>
+            <span style={{ display: "flex", alignItems: "center", width: "100%" }}>
+              Nutritionist Agent
+              <span className="badge-coming-soon">SOON</span>
+            </span>
           </div>
         </div>
 
@@ -284,7 +281,7 @@ function App() {
                 type="text"
                 value={ingredients}
                 onChange={(e) => setIngredients(e.target.value)}
-                placeholder="Type ingredients..."
+                placeholder="Type ingredients (eg- Rice, Paneer, Onion, Corn, Tomatoes)........."
                 autoComplete="off"
                 disabled={loading}
               />
