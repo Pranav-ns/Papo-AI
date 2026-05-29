@@ -68,15 +68,14 @@ body {
    AMPLIFY AUTHENTICATOR GORGEOUS CUSTOMIZATION
    ========================================== */
 
-.amplify-authenticator {
+[data-amplify-authenticator] {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  padding: 24px;
-}
-
-[data-amplify-authenticator] {
+  width: 100vw;
+  background-color: var(--bg-main) !important;
+  
   --amplify-colors-background-primary: var(--bg-sidebar) !important;
   --amplify-colors-background-secondary: var(--bg-main) !important;
   --amplify-colors-brand-primary-80: var(--accent-hover) !important;

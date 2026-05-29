@@ -194,7 +194,7 @@ function App() {
       {/* Sidebar Navigation */}
       <aside className="sidebar">
         <div className="sidebar-header" style={{ alignItems: "center", gap: "10px" }}>
-          <img src="/logo.png" alt="Papo Logo" style={{ width: "40px", height: "40px", objectFit: "contain" }} />
+          <img src="/logo.png" alt="Papo Logo" style={{ width: "40px", height: "40px", objectFit: "contain", mixBlendMode: "screen", filter: "brightness(1.1)" }} />
           <h1>Papo AI</h1>
         </div>
 
