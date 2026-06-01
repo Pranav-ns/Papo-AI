@@ -4,6 +4,21 @@ import { Amplify } from "aws-amplify";
 import { Authenticator, View } from "@aws-amplify/ui-react";
 import "@aws-amplify/ui-react/styles.css";
 
+import { getWebInstrumentations, initializeFaro, ReactIntegration } from '@grafana/faro-react';
+
+initializeFaro({
+  url: import.meta.env.VITE_GRAFANA_FARO_ENDPOINT || '',
+  app: {
+    name: 'papo-frontend',
+    version: '1.0.0',
+    environment: 'production'
+  },
+  instrumentations: [
+    ...getWebInstrumentations(),
+    new ReactIntegration(),
+  ],
+});
+
 import App from "./App";
 import "./index.css";
 import outputs from "../amplify_outputs.json";

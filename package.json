@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "@aws-amplify/ui-react": "^6.15.4",
+    "@grafana/faro-react": "^2.7.0",
+    "@grafana/faro-web-sdk": "^2.7.0",
     "aws-amplify": "^6.17.0",
     "react": "^19.2.6",
     "react-dom": "^19.2.6"
