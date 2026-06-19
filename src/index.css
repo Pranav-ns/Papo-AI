@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
 
 :root {
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
@@ -7,26 +7,26 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  /* Minimal Dark Dashboard Tokens */
-  --bg-main: #111111;
-  --bg-sidebar: #1a1a1a;
-  --bg-card: #212121;
-  --bg-card-hover: #2a2a2a;
+  /* Pitch Black Portfolio Tokens */
+  --bg-main: #000000;
+  --bg-sidebar: #050505;
+  --bg-card: #0a0a0a;
+  --bg-card-hover: #141414;
   
-  --border-light: #333333;
-  --border-active: #444444;
+  --border-light: rgba(255, 255, 255, 0.08);
+  --border-active: rgba(255, 255, 255, 0.2);
   
-  --text-primary: #f4f4f5;
+  --text-primary: #ffffff;
   --text-secondary: #a1a1aa;
-  --text-muted: #71717a;
+  --text-muted: #52525b;
   
-  --accent-color: #3b82f6; /* Subtle blue for active states */
-  --accent-hover: #2563eb;
+  --accent-color: #ffffff; /* Stark white accent for ultra-modern look */
+  --accent-hover: #cccccc;
   
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
-  --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.5);
+  --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.8);
+  --shadow-md: 0 8px 30px rgba(0, 0, 0, 0.9);
   
-  --transition-fast: all 0.15s ease;
+  --transition-fast: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 * {
@@ -46,13 +46,13 @@ body {
   overflow-x: hidden;
 }
 
-/* custom scrollbars */
+/* Custom minimal scrollbars */
 ::-webkit-scrollbar {
-  width: 6px;
+  width: 4px;
 }
 
 ::-webkit-scrollbar-track {
-  background: var(--bg-main);
+  background: transparent;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -65,7 +65,7 @@ body {
 }
 
 /* ==========================================
-   AMPLIFY AUTHENTICATOR GORGEOUS CUSTOMIZATION
+   AMPLIFY AUTHENTICATOR PITCH-BLACK REDESIGN
    ========================================== */
 
 [data-amplify-authenticator] {
@@ -76,7 +76,7 @@ body {
   width: 100vw;
   background-color: var(--bg-main) !important;
   
-  --amplify-colors-background-primary: var(--bg-sidebar) !important;
+  --amplify-colors-background-primary: var(--bg-card) !important;
   --amplify-colors-background-secondary: var(--bg-main) !important;
   --amplify-colors-brand-primary-80: var(--accent-hover) !important;
   --amplify-colors-brand-primary-90: var(--accent-color) !important;
@@ -90,14 +90,15 @@ body {
   --amplify-colors-border-secondary: var(--border-light) !important;
   
   /* Field controls */
-  --amplify-components-fieldcontrol-background-color: var(--bg-main) !important;
+  --amplify-components-fieldcontrol-background-color: transparent !important;
   --amplify-components-fieldcontrol-border-color: var(--border-light) !important;
   --amplify-components-fieldcontrol-color: var(--text-primary) !important;
-  --amplify-components-fieldcontrol-focus-border-color: var(--accent-color) !important;
+  --amplify-components-fieldcontrol-focus-border-color: var(--border-active) !important;
   --amplify-components-fieldcontrol-focus-box-shadow: none !important;
 
   /* Buttons */
   --amplify-components-button-primary-background-color: var(--accent-color) !important;
+  --amplify-components-button-primary-color: #000000 !important;
   --amplify-components-button-primary-hover-background-color: var(--accent-hover) !important;
   
   font-family: 'Inter', sans-serif !important;
@@ -105,44 +106,48 @@ body {
 
 /* Style the auth card wrapper */
 [data-amplify-container] {
-  background: var(--bg-sidebar) !important;
+  background: var(--bg-card) !important;
   border: 1px solid var(--border-light) !important;
-  border-radius: 12px !important;
+  border-radius: 8px !important;
   box-shadow: var(--shadow-md) !important;
   overflow: hidden !important;
-  max-width: 400px !important;
+  max-width: 420px !important;
   width: 100% !important;
+  padding: 12px !important;
 }
 
 .amplify-heading {
   color: var(--text-primary) !important;
-  font-weight: 600 !important;
+  font-weight: 500 !important;
+  letter-spacing: -0.02em !important;
 }
 
 .amplify-tabs {
   border-bottom: 1px solid var(--border-light) !important;
+  margin-bottom: 16px !important;
 }
 
 .amplify-tabs-item {
-  color: var(--text-secondary) !important;
-  font-weight: 500 !important;
-  border-bottom: 2px solid transparent !important;
+  color: var(--text-muted) !important;
+  font-weight: 400 !important;
+  border-bottom: 1px solid transparent !important;
 }
 
 .amplify-tabs-item--active {
   color: var(--text-primary) !important;
-  border-bottom-color: var(--accent-color) !important;
+  border-bottom-color: var(--text-primary) !important;
   background: transparent !important;
 }
 
 .amplify-input {
-  border-radius: 6px !important;
-  padding: 10px 14px !important;
+  border-radius: 4px !important;
+  padding: 12px 14px !important;
   font-size: 14px !important;
+  background: rgba(255, 255, 255, 0.02) !important;
 }
 
 .amplify-button--primary {
-  border-radius: 6px !important;
+  border-radius: 4px !important;
   font-weight: 500 !important;
   padding: 12px !important;
   box-shadow: none !important;
@@ -150,7 +155,7 @@ body {
 
 .amplify-button--link {
   color: var(--text-secondary) !important;
-  font-weight: 500 !important;
+  font-weight: 400 !important;
 }
 
 .amplify-button--link:hover {
@@ -160,6 +165,6 @@ body {
 .amplify-label {
   color: var(--text-secondary) !important;
   font-size: 13px !important;
-  font-weight: 500 !important;
-  margin-bottom: 4px !important;
+  font-weight: 400 !important;
+  margin-bottom: 6px !important;
 }

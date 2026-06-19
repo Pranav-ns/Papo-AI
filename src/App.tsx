@@ -236,9 +236,6 @@ function App() {
         <div className="chat-window" ref={chatWindowRef}>
           {messages.map((msg) => (
             <div key={msg.id} className={`message ${msg.role === "user" ? "user-message" : "bot-message"} animate-fade-in`}>
-              <div className="message-label">
-                {msg.role === "user" ? "You" : "Papo AI"}
-              </div>
               
               <div className={`bubble ${msg.role === "user" ? "user-bubble" : msg.isRecipe ? "recipe-bubble" : "bot-bubble"}`}>
                 {msg.isRecipe ? (
@@ -252,7 +249,6 @@ function App() {
 
           {loading && (
             <div className="message bot-message animate-fade-in">
-              <div className="message-label">Papo AI</div>
               <div className="bubble bot-bubble">
                 <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
                   <Loader size="small" /> Generating recipe...
@@ -264,8 +260,6 @@ function App() {
 
         {/* Input Area */}
         <div className="input-container">
-          <div style={{ width: "100%", maxWidth: "800px" }}>
-            
             {messages.length === 1 && !loading && (
               <div className="preset-chips animate-fade-in">
                 {PRESET_CHIPS.map((chip, idx) => (
@@ -289,7 +283,6 @@ function App() {
                 Generate
               </button>
             </form>
-          </div>
         </div>
       </section>
     </div>
